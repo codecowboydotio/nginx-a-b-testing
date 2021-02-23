@@ -1,0 +1,6 @@
+vars.tf
+*.tfstate
+*.tfstate.backup
+files/nginx-repo.*
+files/nginx_external_ip.txt
+
