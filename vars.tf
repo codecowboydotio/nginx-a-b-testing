@@ -32,3 +32,4 @@ variable "ssh_key_location" {
 variable "device_id_script_tag" {
   default = "YOUR DEVICEID SCRIPT TAG"
 }
+
