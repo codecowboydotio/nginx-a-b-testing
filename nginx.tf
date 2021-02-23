@@ -39,8 +39,5 @@ resource "aws_instance" "nginx-server" {
 }
 
 output "nginx_server_ip" {
-  value = aws_instance.nginx-server.*.public_ip
-}
-output "acman-a_ip" {
-  value = aws_instance.pacman-a.public_ip
+  value = aws_instance.nginx-server.public_ip
 }

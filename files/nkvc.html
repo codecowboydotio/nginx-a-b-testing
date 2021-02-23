@@ -15,13 +15,13 @@
       <div class="columns medium-4" v-for="(result, index) in results">
         <div v-if="index" class="card">
           <div class="card-section">
-            <p> Server: {{ index }} </p>
+            <p> NGINX: {{ index }} </p>
           </div>
           <div class="card-divider">
-            <p>Server A: {{ 100 - result }}%</p>
+            <p>Application A: {{ 100 - result }}%</p>
           </div>
           <div class="card-divider">
-            <p>Server B: {{ result }}%</p>
+            <p>Application B: {{ result }}%</p>
           </div>
         </div>
       </div>
