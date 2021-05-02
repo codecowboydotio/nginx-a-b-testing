@@ -324,6 +324,120 @@ The VUE app does a **POST** to the API on the NGINX server, and updates the sett
 
 ![Image of nkvc.html](nkvc.JPG)
 
+The source code of the HTML page is fairly simple as well.
+
+```
+      const url = "http://www.myserver.gtld/api/6/http/keyvals/split"
+      const vm = new Vue({
+              el: '#keyval-state',
+              data () {
+                return {
+                  results: null,
+                }
+              },
+              mounted() {
+                axios.get(url).then(response => {
+                  this.results = response.data
+                })
+              }
+            });
+      const goo = new Vue({
+         el: '#keyval-post',
+         data: {
+           counter: 0,
+           splitpercent: ''
+         },
+         methods: {
+           submit(){
+             axios.get(url)
+              .then((response) => {
+                console.log(response.data["www.myserver.gtld"])
+                axios.delete(url, { '"www.myserver.gtld"': response.data["x.x.x.x"] })
+                  .then((response) => {
+                    console.log(response)
+                    axios.post(url, {'www.myserver.gtld': this.splitpercent})
+                    location.reload();
+                  })
+              })
+           } //end of submit
+         } //end of methods
+      });
+```
+
+You will of course note that very lazy and not reactive **location.reload();** at the end. I'll fix it one day!
+
+The HTML code is siilarly simple.
+
+```
+    <div class="container" id="keyval-state">
+      <h3 class="text-center">A/B Testing Control Panel</h3>
+      <div class="columns medium-4" v-for="(result, index) in results">
+        <div v-if="index" class="card">
+          <div class="card-section">
+            <p> NGINX: www.myserver.gtld</p>
+          </div>
+          <div class="card-divider">
+            <p>Application A: {{ 100 - result }}%</p>
+          </div>
+          <div class="card-divider">
+            <p>Application B: {{ result }}%</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container" id="keyval-post">
+      <div class="columns medium-4">
+        <div class="card">
+          <div class="card-section">
+            <p> Change split value</p>
+          </div>
+          <div class="card-section">
+            <input type="text" v-model="splitpercent">
+            <v-btn type="submit" @click="submit">Submit</v-btn>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<div>
+```
+
+I am using [vuetify](https://vuetifyjs.com/en/) for some of the widgets. This just makes the button look nicer.
+
+### Axios
+
+A note on AXIOS - the library that I'm using the perform the **POST** to the NGINX API. Axios has one very very simple and elegant characteristic. The Axios library is 100% correct in its implementation of CORS. Essentially, the server needs to set the headers that are accepted from the client. Axios will adhere to these headers in a strict fashion. If the server does **not** set a header as an **accept** then the axios client will **not** send the header even if you explicitly attach it. This is the reason that my configuration explicitly sets **OPTIONS** headers for the /api location.
+
+This is documented [here](https://github.com/axios/axios/issues/891#issuecomment-418836831)
+
+As the github issue points out, it is up to the client implementation how it handles server headers. The Axios client is a strict or literal interpretation, and during the preflight or **OPTIONS** portion, the client will determine which headers the server is willing to accept.
+
+...just something to be aware of as it will save you **hours** of troubleshooting.
+
+## What's it all look like?
+
+### Logging Configuration
+
+### Logs
+
+A snippet of my logs is below. 
+
+You can see from the logs that the source is the same IP address. The **user agent** is different because I am using different browsers. I am using both Firefox and Safari on the same client PC. I get two different device IDs 
+
+```
+sourceip=10.1.1.10 _imp_di_pc_=ARCYjmAAAAAAO5ubqSLrae52At2vmPFL Safari/537.36
+sourceip=10.1.1.10 _imp_di_pc_=ARCYjmAAAAAAO5ubqSLrae52At2vmPFL Safari/537.36
+sourceip=10.1.1.10 _imp_di_pc_=ARCYjmAAAAAAO5ubqSLrae52At2vmPFL Safari/537.36
+sourceip=10.1.1.10 _imp_di_pc_=ARCYjmAAAAAAO5ubqSLrae52At2vmPFL Safari/537.36
+sourceip=10.1.1.10 _imp_di_pc_=AfuXjmAAAAAAHsisXx4rVFUrEcZG0uuP Firefox/88.0
+sourceip=10.1.1.10 _imp_di_pc_=AfuXjmAAAAAAHsisXx4rVFUrEcZG0uuP Firefox/88.0
+sourceip=10.1.1.10 _imp_di_pc_=AfuXjmAAAAAAHsisXx4rVFUrEcZG0uuP Firefox/88.0
+sourceip=10.1.1.10 _imp_di_pc_=AfuXjmAAAAAAHsisXx4rVFUrEcZG0uuP Firefox/88.0
+sourceip=10.1.1.10 _imp_di_pc_=AfuXjmAAAAAAHsisXx4rVFUrEcZG0uuP Firefox/88.0
+```
+
+![apps](apps.JPG)
+
 ## What's next?
 
 
