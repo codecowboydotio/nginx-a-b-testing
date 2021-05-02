@@ -29,6 +29,8 @@ I thought to myself - "When I do A/B testing or canary testing, I have a need to
 
 I could use the deviceID as a unique identifier for identifying clients but also for directing the clients' to new versions of my application deployment.
 
+![apps](apps.JPG)
+
 ## Built on the shoulders of giants
 
 Like a lot of open source ideas, this is built on the shoulders of giants.
