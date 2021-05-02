@@ -28,11 +28,11 @@ I could use the deviceID as a unique identifier for identifying clients but also
 Like a lot of open source ideas, this is built on the shoulders of giants.
 Specifically, two NGINX blogs that I have to mention.
 
-Kevin Jones' excellent blog: https://www.nginx.com/blog/performing-a-b-testing-nginx-plus/
+Kevin Jones' excellent blog [here](https://www.nginx.com/blog/performing-a-b-testing-nginx-plus/)
 
 and
 
-Rick Nelson's excellent blog: https://www.nginx.com/blog/dynamic-a-b-testing-with-nginx-plus/
+Rick Nelson's excellent blog [here](https://www.nginx.com/blog/dynamic-a-b-testing-with-nginx-plus/)
 
 
 ## NGINX+ 
