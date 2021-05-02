@@ -23,11 +23,29 @@ I thought to myself - "When I do A/B testing or canary testing, I have a need to
 
 I could use the deviceID as a unique identifier for identifying clients but also for directing the clients' to new versions of my application deployment.
 
+## Built on the shoulders of giants
+
+Like a lot of open source ideas, this is built on the shoulders of giants.
+Specifically, two NGINX blogs that I have to mention.
+
+Kevin Jones' excellent blog: https://www.nginx.com/blog/performing-a-b-testing-nginx-plus/
+
+and
+
+Rick Nelson's excellent blog: https://www.nginx.com/blog/dynamic-a-b-testing-with-nginx-plus/
+
+
 ## NGINX+ 
 
-NGINX+ has the ability to 
+NGINX+ has a few key abilities that I'm going to use. 
+
+I'm going to split clients' based on a variable.
+I'm going to keep an in memory map of client to application.
+I'm going to dynamically update the split values as a percentage.
 
 ### Split
+
+The split functionality of NGINX is provided by the [split_clients](https://nginx.org/en/docs/http/ngx_http_split_clients_module.html) module.
 
 ### Key value pair
 
