@@ -419,6 +419,7 @@ As the github issue points out, it is up to the client implementation how it han
 ...just something to be aware of as it will save you **hours** of troubleshooting.
 
 ## What's it all look like?
+
 Each of the different browsers is directed to a different version of the application that I have deployed. This is because I have a different deviceID for each browser, and each browser is being split by the **split_clients** directive and forwarded to a different upstream server. 
 
 ![apps](apps.JPG)
@@ -448,7 +449,9 @@ To reference this format, I use the following directive
 
 A snippet of my logs is below. 
 
-You can see from the logs that the source is the same IP address. The **user agent** is different because I am using different browsers. I am using both Firefox and Safari on the same client PC. I get two different device IDs 
+You can see from the logs that the source is the same IP address. The **user agent** is different because I am using different browsers. I am using both Firefox and Safari on the same client PC. I get two different device IDs. 
+
+**Each browser has a unique identifier and is treated as a separate client!**
 
 ```
 sourceip=10.1.1.10 _imp_di_pc_=ARCYjmAAAAAAO5ubqSLrae52At2vmPFL Safari/537.36
