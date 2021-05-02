@@ -323,6 +323,7 @@ Updating the split using curl isn't that **dynamic** for the most part, so I wro
 The VUE app does a **POST** to the API on the NGINX server, and updates the setting accordingly.
 
 ![Image of nkvc.html](/nkvc.JPG)
+![Image of nkvc.html](nkvc.JPG)
 ![Image of nkvc.html](/docs/nkvc.JPG)
 
 ## What's next?
