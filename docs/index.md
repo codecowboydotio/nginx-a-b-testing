@@ -216,6 +216,49 @@ I **highly recommend** the NGINX regex tester.
 It is documented [here](https://www.nginx.com/blog/regular-expression-tester-nginx/) in an awesome blog post by Rick Nelson.
 
 
+### API 
+
+There's one last piece of the puzzle here. I need to enable to NGINX+ API in order to be able to update the keyval store using API calls.
+
+The configuration for this looks like this:
+
+```
+            location /api {
+                api write=on;
+                # in production, directives restricting access
+                add_header 'Access-Control-Allow-Origin' '*';
+                add_header 'Access-Control-Allow-Methods' 'GET, POST, DELETE, PATCH, PUT, OPTIONS';
+                add_header 'Access-Control-Allow-Headers' 'Content-Type, Accept';
+                if ($request_method = OPTIONS) {
+                  add_header 'Access-Control-Allow-Origin' '*';
+                  add_header 'Access-Control-Allow-Methods' 'GET, POST, DELETE, PATCH, PUT, OPTIONS';
+                  add_header 'Access-Control-Allow-Headers' 'Content-Type, Accept';
+                  return 200;
+                }
+            }
+```
+
+This allows me to make API calls to NGINX.
+The NGINX API is documented [here](http://nginx.org/en/docs/http/ngx_http_api_module.html)
+
+Now you **should** include something like this:
+
+```
+        location /api {
+            api write=on;
+            **allow 127.0.0.1;**
+            **deny all;**
+        }
+```
+
+Exposing the API without appropriate security means that anyone can potentially access and write to your NGINX instance. Under most circumstances this would be very uncool.
+
+I am going to use a VUE app to update the API, which means that I will need to cater for two types of requests. I need to cater for an **OPTIONS** request as well as a **POST** request.
+
+Each request type needs to have the appropriate headers set so that the client can access the API.
+
+For some reason I couldn't get the **OPTIONS** request to work without having a separate if statement - if you know why - please let me know.
+
 ### Testing
 
 Once everything is provisioned and I have my config files set up, I can start to explore a few things.
@@ -250,6 +293,30 @@ In turn this splits traffic equally between my two upstream servers.
 
 
 ### Dynamically update the split
+
+Now we can dynamically update the split values as well.
+In order to do this, all we need to do is update the 
+
+```
+curl -iX PATCH -d '{"www.myserver.gtld":10}' http://localhost/api/3/http/keyvals/split
+
+HTTP/1.1 204 No Content
+Server: nginx/1.19.10
+Date: Sun, 02 May 2021 10:39:16 GMT
+Connection: keep-alive
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, POST, DELETE, PATCH, PUT, OPTIONS
+Access-Control-Allow-Headers: Content-Type, Accept
+```
+
+Then if I **GET** the value of my keyval pair I can see that it has been updated:
+
+```
+curl http://127.0.0.1/api/6/http/keyvals
+
+{"split":{"www.myserver.gtld":"10"}}
+```
+
 
 ## Vue control page
 
