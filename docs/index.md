@@ -133,19 +133,6 @@ The documentation for it is [here](https://clouddocs.f5.com/cloud-services/lates
 
 More importantly the [FAQ](https://f5cloudservices.zendesk.com/hc/en-us/sections/360012008533-Device-ID-FAQs) has a really great description of the [dual identifier approach](https://f5cloudservices.zendesk.com/hc/en-us/articles/360060250913) that DeviceID uses.
 
-Essentially, it's a bit of javascript you embedd on a page, it sends some signal information back to F5, and they provide you with two identifiers in the form of a cookie in the browser. 
-
-**WHAT YOU DO WITH IT IS UP TO YOU**
-
-```
-{
-    "diA": "AT9cyV8AAAAAd60uXCtYafPTZGLaVAku"
-    "diB": "ASJ4gFmzPo/a8AHJceWhykudRoXeBGlP"
-}
-```
-
-That's the sort of thing that you will get back. 
-
 ### Why this is important
 
 DeviceID is super important because it's a way of uniquely identifying a client. In this case, the client is a browser, but think of it as a "device identifier". Over time the identifier should become more accurate. 
@@ -162,6 +149,19 @@ Most of the use cases I have seen thus far are in fact security related, so I sa
 ....here we are.
 
 ### What it gives me
+
+Essentially, it's a bit of javascript you embedd on a page, it sends some signal information back to F5, and they provide you with two identifiers in the form of a cookie in the browser. 
+
+**WHAT YOU DO WITH IT IS UP TO YOU**
+
+```
+{
+    "diA": "AT9cyV8AAAAAd60uXCtYafPTZGLaVAku"
+    "diB": "ASJ4gFmzPo/a8AHJceWhykudRoXeBGlP"
+}
+```
+
+That's the sort of thing that you will get back. 
 
 ### Testing
 
