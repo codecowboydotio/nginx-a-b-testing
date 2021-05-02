@@ -322,8 +322,6 @@ curl http://127.0.0.1/api/6/http/keyvals
 Updating the split using curl isn't that **dynamic** for the most part, so I wrote a small VUE app to do it for me.
 The VUE app does a **POST** to the API on the NGINX server, and updates the setting accordingly.
 
-![Image of nkvc.html](/nkvc.JPG)
-![Image of nkvc.html](nkvc.JPG)
 ![Image of nkvc.html](/docs/nkvc.JPG)
 
 ## What's next?
