@@ -17,9 +17,15 @@ This post is about an amalgam of several things.
 I had been looking at ways to use DeviceID with NGINX since it was released late last year.
 The intention was to use it in a way that was not strictly a security related use case, but to use it in such way and for a purpose where I needed to have a fine grained view of a client identifier.
 
+I thought to myself - "When I do A/B testing or canary testing, I have a need to identify the client to be able to split traffic"
 
+**A LIGHTBULB WENT OFF**
+
+I could use the deviceID as a unique identifier for identifying clients but also for directing the clients' to new versions of my application deployment.
 
 ## NGINX+ 
+
+NGINX+ has the ability to 
 
 ### Split
 
