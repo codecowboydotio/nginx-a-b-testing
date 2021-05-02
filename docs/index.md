@@ -125,6 +125,25 @@ The configuration snippet above does two things:
 
 In my case, my keyval store will store two values, the **split_level** which corresponds to the pre-defined percentage in the **split_clients** directive above. It will also store the **host** identifier. In my case I will be using the special host identifier deviceID (discussed below).
 
+### Map
+
+I am also using a map to enable me to effectively and easily set the keyval pair.
+
+```
+        map $split_level $upstream {
+            0        $split0;
+            5        $split5;
+            10       $split10;
+            25       $split25;
+            50       $split50;
+            75       $split75;
+            100      $split100;
+            default  $split0;
+        }
+```
+
+The map allows me to set the upstream variable to the **split_clients** directives above. Essentially, this is the linkage between the split clients directive and the key value store.
+
 ## DeviceID
 
 DeviceID is a very funky thing, and it's within budget - it's **free**.
@@ -163,7 +182,72 @@ Essentially, it's a bit of javascript you embedd on a page, it sends some signal
 
 That's the sort of thing that you will get back. 
 
+### Configuration for DeviceID
+
+### Client side
+
+Just include the appropriate **<SCRIPT>** tags in your application :)
+
+### NGINX Configuration
+
+The NGINX side of the house is fairly easy also.
+
+The first part is the **cookie** variable. 
+There is an inbuilt [cookie](http://nginx.org/en/docs/http/ngx_http_core_module.html#variables) variable as part of core NGINX. This can be used to extract a cookie value by name, and assign the value of the cookie to a variable. I am doing this so that I can easily identify which DeviceID cookie I am dealing with within the conifguration.
+
+As the cookie directive gives you a **safe** ASCII  representation of the cookie value, I am using a **regex** to split down the cookie to something usable and unique. You will note that the value I get from the cookie directive includes **%22** for space and so on.
+
+```
+
+        map $cookie__imp_apg_r_ $dia {
+          "~*(.+)(diA%22%3A%22)(?<found>.+)(%22%2C%22)" $found;
+          default "unset";
+        }
+        map $cookie__imp_apg_r_ $dib {
+          "~*(.+)(diB%22%3A%22)(?<p>.+)(%22%7D)" $p;
+          default "unset";
+        }
+```
+
+NGINX regex is fairly standard, but I did need to try a few times and dust off my brain to get exactly what I wanted. 
+
+I **highly recommend** the NGINX regex tester. 
+
+It is documented [here](https://www.nginx.com/blog/regular-expression-tester-nginx/) in an awesome blog post by Rick Nelson.
+
+
 ### Testing
+
+Once everything is provisioned and I have my config files set up, I can start to explore a few things.
+
+Let's check my keyval pair
+
+```
+curl http://127.0.0.1/api/6/http/keyvals
+
+{"split":{"www.myserver.gtld":"50"}}
+```
+This means that for the **INCOMMING** address of my server (www.myserver.gtld) the map **50** will be used.
+
+We know from the previous configuration examples that the map of **50** looks like this:
+
+```
+        map $split_level $upstream {
+            50       $split50;
+        }
+
+```
+This will use the variable **$split50** which translates to this in our config file:
+
+```
+        split_clients $unique_client_identifier $split50 {
+            50% server_b;
+            *   server_a;
+        }
+
+```
+In turn this splits traffic equally between my two upstream servers.
+
 
 ### Dynamically update the split
 
