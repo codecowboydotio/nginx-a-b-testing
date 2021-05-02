@@ -216,7 +216,7 @@ I **highly recommend** the NGINX regex tester.
 It is documented [here](https://www.nginx.com/blog/regular-expression-tester-nginx/) in an awesome blog post by Rick Nelson.
 
 
-### API 
+## API 
 
 There's one last piece of the puzzle here. I need to enable to NGINX+ API in order to be able to update the keyval store using API calls.
 
@@ -246,8 +246,8 @@ Now you **should** include something like this:
 ```
         location /api {
             api write=on;
-            **allow 127.0.0.1;**
-            **deny all;**
+            allow 127.0.0.1;
+            deny all;
         }
 ```
 
@@ -259,7 +259,7 @@ Each request type needs to have the appropriate headers set so that the client c
 
 For some reason I couldn't get the **OPTIONS** request to work without having a separate if statement - if you know why - please let me know.
 
-### Testing
+## Testing
 
 Once everything is provisioned and I have my config files set up, I can start to explore a few things.
 
@@ -317,8 +317,12 @@ curl http://127.0.0.1/api/6/http/keyvals
 {"split":{"www.myserver.gtld":"10"}}
 ```
 
-
 ## Vue control page
+
+Updating the split using curl isn't that **dynamic** for the most part, so I wrote a small VUE app to do it for me.
+The VUE app does a **POST** to the API on the NGINX server, and updates the setting accordingly.
+
+![Image of nkvc.html](nkvc.JPG)
 
 ## What's next?
 
