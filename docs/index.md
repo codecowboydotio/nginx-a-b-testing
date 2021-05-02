@@ -4,6 +4,10 @@ I recently figured out how to use F5's DeviceID service with NGINX+ to perform A
 This is not only a cool and geeky thing to do, but I figured out it's very very useful.
 Along the way, I also wrote a crude control panel page to let me change the split without resorting to curl :)
 
+## TLDR - watch the meetup
+
+At a recentish NGINX meetup I presented this - you can watch the [video](https://youtu.be/IfYSeYTKqHg?t=1375) if you're short on time.
+
 ## What is this?
 
 This post is about an amalgam of several things.
@@ -415,8 +419,30 @@ As the github issue points out, it is up to the client implementation how it han
 ...just something to be aware of as it will save you **hours** of troubleshooting.
 
 ## What's it all look like?
+Each of the different browsers is directed to a different version of the application that I have deployed. This is because I have a different deviceID for each browser, and each browser is being split by the **split_clients** directive and forwarded to a different upstream server. 
+
+![apps](apps.JPG)
+
+Same app - diferent versions!
 
 ### Logging Configuration
+
+The logging configuration to show this is relatively simple.
+
+```
+        log_format kv 'sourceip=$remote_addr ' '_imp_apg_r_=$cookie__imp_apg_r_' ' _imp_di_pc_=$cookie__imp_di_pc_' ' $http_user_agent' ' dia=$dia' ' di
+b=$dib';
+```
+
+To reference this format, I use the following directive
+
+```
+        server {
+            access_log /var/log/nginx/access.log kv;
+            listen 80;
+	    ...
+        }
+```
 
 ### Logs
 
@@ -436,9 +462,10 @@ sourceip=10.1.1.10 _imp_di_pc_=AfuXjmAAAAAAHsisXx4rVFUrEcZG0uuP Firefox/88.0
 sourceip=10.1.1.10 _imp_di_pc_=AfuXjmAAAAAAHsisXx4rVFUrEcZG0uuP Firefox/88.0
 ```
 
-![apps](apps.JPG)
 
 ## What's next?
+
+Well - the next adventure is more than likely going to be using DeviceID and NGINX javascript in such a way to usefully store the deviceID and do something useful with it (not security related of course) :)
 
 
 ## About me
