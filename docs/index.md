@@ -186,7 +186,7 @@ That's the sort of thing that you will get back.
 
 ### Client side
 
-Just include the appropriate **<SCRIPT>** tags in your application :)
+Just include the appropriate **\<SCRIPT\>** tags in your application :)
 
 ### NGINX Configuration
 
