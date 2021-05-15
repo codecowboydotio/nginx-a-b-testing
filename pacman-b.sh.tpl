@@ -23,6 +23,7 @@ cp /tmp/nginx-hex.svg /var/www/html/img/inky.svg
 cp /tmp/nginx-hex.svg /var/www/html/img/pinky.svg
 sed '/^<\/head>/i ${device_id_script_tag}' /var/www/html/index.html > /tmp/fooble
 mv /tmp/fooble /var/www/html/index.html
+sed -i "s/<div id=\"title\">Pacman Canvas<\/div>/<div id=\"title\">Application B<\/div>/g" /var/www/html/index.html
 systemctl start httpd
 echo "firstrun debug: finished-config"
 logger -p local0.info 'firstrun debug: finished-config'
